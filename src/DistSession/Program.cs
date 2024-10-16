@@ -1,5 +1,5 @@
 /*
- *  ¨Ï¥Î Redis ¹F¨ì¤À´²¦¡ Session
+ *  ä½¿ç”¨ Redis é”åˆ°åˆ†æ•£å¼ Session
  */
 using DistSession.Lib;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,22 +16,22 @@ double LoginTimeout = builder.Configuration.GetValue<double>("LoginExpireMinute"
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => {
-        options.AccessDeniedPath = new PathString("/Home/AccessDeny");  //©Úµ´¡M¤£¤¹³\µn¤J¡M·|¸õ¨ì³o¤@­¶
-        options.LoginPath = new PathString("/Login/Login");   //µn¤J­¶
-        options.LogoutPath = new PathString("/Home/Index");   //µn¥X«áÂà¨ì¨º¤@­¶
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(LoginTimeout);  //¦pªG¨S¦³³o¤@¶µ³]©w¡M¨º»ò¹w³]¬°14¤Ñ(cookie¹L´Áªº®É¶¡)
+        options.AccessDeniedPath = new PathString("/Home/AccessDeny");  //æ‹’çµ•ï¹ä¸å…è¨±ç™»å…¥ï¹æœƒè·³åˆ°é€™ä¸€é 
+        options.LoginPath = new PathString("/Login/Login");   //ç™»å…¥é 
+        options.LogoutPath = new PathString("/Home/Index");   //ç™»å‡ºå¾Œè½‰åˆ°é‚£ä¸€é 
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(LoginTimeout);  //å¦‚æœæ²’æœ‰é€™ä¸€é …è¨­å®šï¹é‚£éº¼é è¨­ç‚º14å¤©(cookieéæœŸçš„æ™‚é–“)
     });
 #endregion
 
-#region ±N¼Æ¾Ú«OÅ@ªº¯µÆ_¦sÀx¬°¤À¥¬¦¡
-//¦w¸Ë Microsoft.AspNetCore.DataProtection.StackExchangeRedis
+#region å°‡æ•¸æ“šä¿è­·çš„ç§˜é‘°å­˜å„²ç‚ºåˆ†å¸ƒå¼
+//å®‰è£ Microsoft.AspNetCore.DataProtection.StackExchangeRedis
 builder.Services.AddDataProtection()
     .PersistKeysToStackExchangeRedis(ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection")), ".dist.Session");
 #endregion
 
-#region ¥[¤J redis §@¤À´²¦¡
+#region åŠ å…¥ redis ä½œåˆ†æ•£å¼
 builder.Services.AddStackExchangeRedisCache(options => {
-    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");  //redis ³s½u
+    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");  //redis é€£ç·š
     options.InstanceName = ".dist.Session";
 });
 #endregion
@@ -39,7 +39,7 @@ builder.Services.AddStackExchangeRedisCache(options => {
 #region use session
 builder.Services.AddSession(options => {
     options.Cookie.Name = ".dist.Session";
-    options.IdleTimeout = TimeSpan.FromSeconds(300);     // ³]©w Session ¹L´Áªº®É¶¡, 300 sec
+    options.IdleTimeout = TimeSpan.FromSeconds(300);     // è¨­å®š Session éæœŸçš„æ™‚é–“, 300 sec
 });
 #endregion
 
@@ -63,8 +63,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();  //ÅçÃÒ
-app.UseAuthorization();   //±ÂÅv
+app.UseAuthentication();  //é©—è­‰
+app.UseAuthorization();   //æˆæ¬Š
 
 app.MapControllerRoute(
     name: "default",
